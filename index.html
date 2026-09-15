@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gazi Jarin | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+     <style>
+    :root {
+      --bg: #061426;
+      --particle: #45f3df;
+    }
+
+    * { box-sizing: border-box; }
+    /* Very small screens: keep the portrait centered without adding UI. */
+    @media (max-width: 600px) {
+      body { cursor: default; }
+    }
+  </style>
+</head>
+
+<body>
+   
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <div class="logo">Gazi Jarin</div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#software">Software</a>
+            <a href="#hardware">Hardware</a>
+            <a href="#art">Art</a>
+        </nav>
+
+        <div class="social-icons">
+
+            <!-- Email -->
+            <a href="#" aria-label="Email">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 5h18v14H3z"/>
+                    <path d="M3 6l9 7 9-7"/>
+                </svg>
+            </a>
+
+            <!-- Github -->
+            <a href="#" aria-label="Github">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 .5A12 12 0 0 0 8.2 23.9c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.6-1.3-1.6-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.3.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/>
+                </svg>
+            </a>
+
+            <!-- LinkedIn -->
+            <a href="#" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M5 3.5A2.5 2.5 0 1 1 5 8.5 2.5 2.5 0 0 1 5 3.5zM3 9h4v12H3zM9 9h3.8v1.6h.1c.5-.9 1.7-1.9 3.6-1.9 3.8 0 4.5 2.5 4.5 5.8V21h-4v-5.8c0-1.4 0-3.2-2-3.2s-2.3 1.5-2.3 3.1V21H9z"/>
+                </svg>
+            </a>
+
+            <!-- Pen -->
+            <a href="#" aria-label="Art">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4 20l1.5-5.5L16.8 3.2a2 2 0 0 1 2.8 0l1.2 1.2a2 2 0 0 1 0 2.8L9.5 19.5z"/>
+                    <path d="M3 21h18"/>
+                </svg>
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- HOME -->
+    <main id="home">
+
+       
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+
+            <!-- DOTTED PORTRAIT -->
+            <div class="portrait">
+                
+<canvas id="canvas"></canvas>
+
+<script>
+/*
+  Interactive Image -> Particle Portrait
+  ---------------------------------------
+  Put source.png in the same folder as this HTML file.
+
+  All particle physics are implemented here — no particle library.
+*/
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d", { alpha: false });
+
+const sourceImage = new Image();
+sourceImage.src = "source.png";
+
+let particles = [];
+let W = 0;
+let H = 0;
+let dpr = 1;
+let imageBox = null;
+let lastTime = performance.now();
+
+/* =========================
+   EASY-TO-TUNE PARAMETERS
+========================= */
+const CONFIG = {
+  particleSpacing: 4.7,
+  particleSize: 1.15,
+  particleOpacity: 0.88,
+  particleColor: "#e0aaff",
+
+  interactionRadius: 135,
+  interactionStrength: 1.35,
+
+  springStrength: 0.075,
+  damping: 0.84,
+
+  swirlStrength: 1.75,
+  waveStrength: 0.22,
+
+  /* How dark a pixel must be before particles can appear. */
+  darknessThreshold: 0.055,
+
+  /* Slight randomness makes the portrait feel less grid-like. */
+  jitter: 0.55,
+
+  /* Maximum number of particles for smoother performance. */
+  maxParticles: 22000
+};
+
+const mouse = {
+  x: -9999,
+  y: -9999,
+  vx: 0,
+  vy: 0,
+  active: false,
+  lastX: -9999,
+  lastY: -9999,
+  radius: 0
+};
+
+let imageCanvas;
+let imageCtx;
+let imageData;
+
+/* =========================
+   RESIZE
+========================= */
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  W = window.innerWidth;
+  H = window.innerHeight;
+
+  canvas.width = Math.floor(W * dpr);
+  canvas.height = Math.floor(H * dpr);
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  buildParticles();
+}
+
+/* =========================
+   IMAGE PROCESSING
+========================= */
+function buildParticles() {
+  if (!sourceImage.complete || !sourceImage.naturalWidth) return;
+
+  /*
+    The source image is drawn to a small offscreen canvas.
+    We sample it rather than displaying it directly.
+  */
+  const sampleScale = Math.min(
+    1,
+    1000 / Math.max(sourceImage.naturalWidth, sourceImage.naturalHeight)
+  );
+
+  const iw = Math.max(1, Math.floor(sourceImage.naturalWidth * sampleScale));
+  const ih = Math.max(1, Math.floor(sourceImage.naturalHeight * sampleScale));
+
+  imageCanvas = document.createElement("canvas");
+  imageCanvas.width = iw;
+  imageCanvas.height = ih;
+
+  imageCtx = imageCanvas.getContext("2d", { willReadFrequently: true });
+  imageCtx.drawImage(sourceImage, 0, 0, iw, ih);
+  imageData = imageCtx.getImageData(0, 0, iw, ih).data;
+
+  /*
+    Fit the source image into the viewport while preserving aspect ratio.
+    The portrait is intentionally kept relatively large.
+  */
+  const maxW = W * 0.54;
+  const maxH = H * 0.88;
+
+  const scale = Math.min(
+    maxW / sourceImage.naturalWidth,
+    maxH / sourceImage.naturalHeight
+  );
+
+  const drawW = sourceImage.naturalWidth * scale;
+  const drawH = sourceImage.naturalHeight * scale;
+
+  imageBox = {
+    x: (W - drawW) * 0.5,
+    y: (H - drawH) * 0.5,
+    width: drawW,
+    height: drawH
+  };
+
+  particles = [];
+
+  const step = CONFIG.particleSpacing;
+  const sx = iw / drawW;
+  const sy = ih / drawH;
+
+  for (let y = 0; y < drawH; y += step) {
+    for (let x = 0; x < drawW; x += step) {
+
+      const px = Math.min(iw - 1, Math.floor(x * sx));
+      const py = Math.min(ih - 1, Math.floor(y * sy));
+      const index = (py * iw + px) * 4;
+
+      const r = imageData[index];
+      const g = imageData[index + 1];
+      const b = imageData[index + 2];
+      const a = imageData[index + 3] / 255;
+
+      if (a < 0.01) continue;
+
+      /* Perceived luminance. */
+      const luminance =
+        (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+      /*
+        White background becomes almost zero.
+        Dark hair/jacket becomes dense.
+        Mid-tone face remains recognizable through lower particle density.
+      */
+      const darkness = 1 - luminance;
+
+      if (darkness < CONFIG.darknessThreshold) continue;
+
+      /*
+        Probability controls density:
+        dark pixels => almost every sample
+        mid-tone pixels => fewer samples
+      */
+      const density = Math.min(1, Math.pow(darkness, 0.72));
+
+      if (Math.random() > density) continue;
+
+      const ox =
+        imageBox.x + x + (Math.random() - 0.5) * CONFIG.jitter;
+
+      const oy =
+        imageBox.y + y + (Math.random() - 0.5) * CONFIG.jitter;
+
+      particles.push({
+        x: ox,
+        y: oy,
+
+        ox: ox,
+        oy: oy,
+
+        vx: 0,
+        vy: 0,
+
+        /* Used for brightness/size variation. */
+        darkness,
+
+        phase: Math.random() * Math.PI * 2,
+        size: CONFIG.particleSize * (0.65 + darkness * 0.75)
+      });
+    }
+  }
+
+  /*
+    If a very large source creates too many points,
+    randomly reduce the array to keep animation smooth.
+  */
+  if (particles.length > CONFIG.maxParticles) {
+    particles = particles
+      .sort(() => Math.random() - 0.5)
+      .slice(0, CONFIG.maxParticles);
+  }
+}
+
+/* =========================
+   MOUSE / POINTER
+========================= */
+function updatePointer(x, y) {
+  if (mouse.lastX > -9000) {
+    mouse.vx = x - mouse.lastX;
+    mouse.vy = y - mouse.lastY;
+  }
+
+  mouse.x = x;
+  mouse.y = y;
+  mouse.lastX = x;
+  mouse.lastY = y;
+  mouse.active = true;
+}
+
+canvas.addEventListener("pointermove", (e) => {
+  updatePointer(e.clientX, e.clientY);
+});
+
+canvas.addEventListener("pointerenter", (e) => {
+  updatePointer(e.clientX, e.clientY);
+  mouse.active = true;
+});
+
+canvas.addEventListener("pointerleave", () => {
+  mouse.active = false;
+  mouse.vx *= 0.25;
+  mouse.vy *= 0.25;
+});
+
+/* Touch support. */
+canvas.addEventListener("touchstart", (e) => {
+  if (!e.touches.length) return;
+  const t = e.touches[0];
+  updatePointer(t.clientX, t.clientY);
+}, { passive: true });
+
+canvas.addEventListener("touchmove", (e) => {
+  if (!e.touches.length) return;
+  const t = e.touches[0];
+  updatePointer(t.clientX, t.clientY);
+}, { passive: true });
+
+canvas.addEventListener("touchend", () => {
+  mouse.active = false;
+});
+
+/* =========================
+   PARTICLE PHYSICS
+========================= */
+function updateParticles(dt, time) {
+  const radius = CONFIG.interactionRadius;
+  const radiusSq = radius * radius;
+
+  /*
+    Convert frame time to a roughly 60 FPS time scale.
+    This keeps the physics stable on different refresh rates.
+  */
+  const frame = Math.min(2, dt / 16.67);
+
+  for (const p of particles) {
+
+    /* Spring return force. */
+    let fx = (p.ox - p.x) * CONFIG.springStrength;
+    let fy = (p.oy - p.y) * CONFIG.springStrength;
+
+    /*
+      Very subtle horizontal/wavy field.
+      It is strongest around the actual portrait rather than the whole screen.
+    */
+    const wave =
+      Math.sin(
+        p.ox * 0.025 +
+        time * 0.0015 +
+        p.phase
+      ) * CONFIG.waveStrength * p.darkness;
+
+    fy += wave;
+
+    if (mouse.active) {
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const distSq = dx * dx + dy * dy;
+
+      if (distSq < radiusSq) {
+        const dist = Math.sqrt(distSq) || 0.001;
+
+        /*
+          Smooth falloff:
+          1 near cursor -> 0 at edge.
+        */
+        const falloff = Math.pow(1 - dist / radius, 2);
+
+        const nx = dx / dist;
+        const ny = dy / dist;
+
+        /*
+          1. Radial push.
+          This keeps particles from simply disappearing into the cursor.
+        */
+        const radial =
+          CONFIG.interactionStrength *
+          falloff *
+          (0.45 + Math.min(2.0, Math.hypot(mouse.vx, mouse.vy) * 0.08));
+
+        fx += nx * radial;
+        fy += ny * radial;
+
+        /*
+          2. Tangential/swirl force.
+          Rotate the radial vector 90 degrees to make particles
+          flow around the cursor like water.
+        */
+        const tangentX = -ny;
+        const tangentY = nx;
+
+        const mouseSpeed = Math.min(
+          4,
+          Math.hypot(mouse.vx, mouse.vy)
+        );
+
+        const swirl =
+          CONFIG.swirlStrength *
+          falloff *
+          (0.35 + mouseSpeed * 0.12);
+
+        fx += tangentX * swirl;
+        fy += tangentY * swirl;
+
+        /*
+          3. Mouse movement direction.
+          Fast cursor movement creates a soft wake behind it.
+        */
+        fx += mouse.vx * falloff * 0.055;
+        fy += mouse.vy * falloff * 0.055;
+      }
+    }
+
+    /* Integrate velocity. */
+    p.vx += fx * frame;
+    p.vy += fy * frame;
+
+    /* Damping / friction. */
+    p.vx *= Math.pow(CONFIG.damping, frame);
+    p.vy *= Math.pow(CONFIG.damping, frame);
+
+    /* Limit extreme velocity. */
+    const speed = Math.hypot(p.vx, p.vy);
+    const maxSpeed = 8;
+
+    if (speed > maxSpeed) {
+      p.vx = (p.vx / speed) * maxSpeed;
+      p.vy = (p.vy / speed) * maxSpeed;
+    }
+
+    p.x += p.vx * frame;
+    p.y += p.vy * frame;
+  }
+
+  /*
+    Mouse velocity decays when the pointer stops.
+    Therefore particles don't keep receiving a permanent push.
+  */
+  mouse.vx *= Math.pow(0.72, frame);
+  mouse.vy *= Math.pow(0.72, frame);
+}
+
+/* =========================
+   RENDER
+========================= */
+function render(time) {
+  ctx.fillStyle = "#061426";
+  ctx.fillRect(0, 0, W, H);
+
+  /*
+    Particles are rendered individually.
+    The original image is NEVER drawn to the visible canvas.
+  */
+  for (const p of particles) {
+
+    /*
+      Darkness controls opacity:
+      darker image areas -> brighter/dense cyan particles.
+    */
+    const alpha =
+      CONFIG.particleOpacity *
+      (0.25 + p.darkness * 0.95);
+
+    ctx.globalAlpha = Math.min(1, alpha);
+
+    /*
+      Tiny variation in size gives the portrait a more organic
+      ASCII/digital-water appearance.
+    */
+    const pulse =
+      1 +
+      Math.sin(time * 0.002 + p.phase) * 0.08;
+
+    const size = p.size * pulse;
+
+    ctx.fillStyle = CONFIG.particleColor;
+
+    /*
+      Mostly dots. Very bright/dark regions occasionally become
+      tiny "+" characters, giving an ASCII-like texture.
+    */
+    if (p.darkness > 0.68 && p.size > 1) {
+      const s = size * 0.75;
+
+      ctx.fillRect(p.x - s, p.y - 0.35, s * 2, 0.7);
+      ctx.fillRect(p.x - 0.35, p.y - s, 0.7, s * 2);
+    } else {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  ctx.globalAlpha = 1;
+
+  /*
+    Cursor glow is intentionally subtle and transparent.
+    It does not replace the particle interaction.
+  */
+  if (mouse.active) {
+    const g = ctx.createRadialGradient(
+      mouse.x, mouse.y, 0,
+      mouse.x, mouse.y, mouse.radius || CONFIG.interactionRadius
+    );
+
+    g.addColorStop(0, "rgba(69,243,223,0.035)");
+    g.addColorStop(0.55, "rgba(69,243,223,0.012)");
+    g.addColorStop(1, "rgba(69,243,223,0)");
+
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(
+      mouse.x,
+      mouse.y,
+      mouse.radius || CONFIG.interactionRadius,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+  }
+}
+
+/* =========================
+   ANIMATION LOOP
+========================= */
+function animate(now) {
+  const dt = Math.min(40, now - lastTime);
+  lastTime = now;
+
+  /* Smoothly grow/shrink the interaction radius. */
+  const targetRadius = mouse.active
+    ? CONFIG.interactionRadius
+    : 0;
+
+  mouse.radius +=
+    (targetRadius - mouse.radius) * 0.12;
+
+  updateParticles(dt, now);
+  render(now);
+
+  requestAnimationFrame(animate);
+}
+
+/* =========================
+   START
+========================= */
+sourceImage.onload = () => {
+  resize();
+  requestAnimationFrame(animate);
+};
+
+sourceImage.onerror = () => {
+  ctx.fillStyle = "#061426";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = "#45f3df";
+  ctx.font = "16px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    "source.png could not be loaded.",
+    W / 2,
+    H / 2
+  );
+};
+
+window.addEventListener("resize", resize);
+</script>
+
+            </div>
+
+
+            <!-- HERO CONTENT -->
+            <div class="hero-content">
+
+                <h1>
+                    hi, <span>gazi</span> here.
+                </h1>
+
+                <p>
+                    Software engineer and artist in New York City. I build ML
+                    models at Google by day and make strange little projects
+                    at the intersection of tech and art by night. Occasionally
+                    both happen at the same time.
+                </p>
+
+                <a href="mailto:hello@example.com" class="hello-btn">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 5h18v14H3z"/>
+                        <path d="M3 6l9 7 9-7"/>
+                    </svg>
+
+                    Say hi!
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ABOUT -->
+        <section id="about" class="about">
+
+            <div class="about-title">
+                <span>/</span> about me
+            </div>
+
+            <div class="line"></div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Particle Portrait</title>
+  <style>
+    :root {
+      --bg: #061426;
+      --particle: #45f3df;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      cursor: crosshair;
+      font-family: Arial, sans-serif;
+    }
+
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Very small screens: keep the portrait centered without adding UI. */
+    @media (max-width: 600px) {
+      body { cursor: default; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<script>
+/*
+  Interactive Image -> Particle Portrait
+  ---------------------------------------
+  Put source.png in the same folder as this HTML file.
+
+  All particle physics are implemented here — no particle library.
+*/
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d", { alpha: false });
+
+const sourceImage = new Image();
+sourceImage.src = "source.png";
+
+let particles = [];
+let W = 0;
+let H = 0;
+let dpr = 1;
+let imageBox = null;
+let lastTime = performance.now();
+
+/* =========================
+   EASY-TO-TUNE PARAMETERS
+========================= */
+const CONFIG = {
+  particleSpacing: 4.7,
+  particleSize: 1.15,
+  particleOpacity: 0.88,
+  particleColor: "#e0aaff",
+
+  interactionRadius: 135,
+  interactionStrength: 1.35,
+
+  springStrength: 0.075,
+  damping: 0.84,
+
+  swirlStrength: 1.75,
+  waveStrength: 0.22,
+
+  /* How dark a pixel must be before particles can appear. */
+  darknessThreshold: 0.055,
+
+  /* Slight randomness makes the portrait feel less grid-like. */
+  jitter: 0.55,
+
+  /* Maximum number of particles for smoother performance. */
+  maxParticles: 22000
+};
+
+const mouse = {
+  x: -9999,
+  y: -9999,
+  vx: 0,
+  vy: 0,
+  active: false,
+  lastX: -9999,
+  lastY: -9999,
+  radius: 0
+};
+
+let imageCanvas;
+let imageCtx;
+let imageData;
+
+/* =========================
+   RESIZE
+========================= */
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  W = window.innerWidth;
+  H = window.innerHeight;
+
+  canvas.width = Math.floor(W * dpr);
+  canvas.height = Math.floor(H * dpr);
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  buildParticles();
+}
+
+/* =========================
+   IMAGE PROCESSING
+========================= */
+function buildParticles() {
+  if (!sourceImage.complete || !sourceImage.naturalWidth) return;
+
+  /*
+    The source image is drawn to a small offscreen canvas.
+    We sample it rather than displaying it directly.
+  */
+  const sampleScale = Math.min(
+    1,
+    1000 / Math.max(sourceImage.naturalWidth, sourceImage.naturalHeight)
+  );
+
+  const iw = Math.max(1, Math.floor(sourceImage.naturalWidth * sampleScale));
+  const ih = Math.max(1, Math.floor(sourceImage.naturalHeight * sampleScale));
+
+  imageCanvas = document.createElement("canvas");
+  imageCanvas.width = iw;
+  imageCanvas.height = ih;
+
+  imageCtx = imageCanvas.getContext("2d", { willReadFrequently: true });
+  imageCtx.drawImage(sourceImage, 0, 0, iw, ih);
+  imageData = imageCtx.getImageData(0, 0, iw, ih).data;
+
+  /*
+    Fit the source image into the viewport while preserving aspect ratio.
+    The portrait is intentionally kept relatively large.
+  */
+  const maxW = W * 0.54;
+  const maxH = H * 0.88;
+
+  const scale = Math.min(
+    maxW / sourceImage.naturalWidth,
+    maxH / sourceImage.naturalHeight
+  );
+
+  const drawW = sourceImage.naturalWidth * scale;
+  const drawH = sourceImage.naturalHeight * scale;
+
+  imageBox = {
+    x: (W - drawW) * 0.5,
+    y: (H - drawH) * 0.5,
+    width: drawW,
+    height: drawH
+  };
+
+  particles = [];
+
+  const step = CONFIG.particleSpacing;
+  const sx = iw / drawW;
+  const sy = ih / drawH;
+
+  for (let y = 0; y < drawH; y += step) {
+    for (let x = 0; x < drawW; x += step) {
+
+      const px = Math.min(iw - 1, Math.floor(x * sx));
+      const py = Math.min(ih - 1, Math.floor(y * sy));
+      const index = (py * iw + px) * 4;
+
+      const r = imageData[index];
+      const g = imageData[index + 1];
+      const b = imageData[index + 2];
+      const a = imageData[index + 3] / 255;
+
+      if (a < 0.01) continue;
+
+      /* Perceived luminance. */
+      const luminance =
+        (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+      /*
+        White background becomes almost zero.
+        Dark hair/jacket becomes dense.
+        Mid-tone face remains recognizable through lower particle density.
+      */
+      const darkness = 1 - luminance;
+
+      if (darkness < CONFIG.darknessThreshold) continue;
+
+      /*
+        Probability controls density:
+        dark pixels => almost every sample
+        mid-tone pixels => fewer samples
+      */
+      const density = Math.min(1, Math.pow(darkness, 0.72));
+
+      if (Math.random() > density) continue;
+
+      const ox =
+        imageBox.x + x + (Math.random() - 0.5) * CONFIG.jitter;
+
+      const oy =
+        imageBox.y + y + (Math.random() - 0.5) * CONFIG.jitter;
+
+      particles.push({
+        x: ox,
+        y: oy,
+
+        ox: ox,
+        oy: oy,
+
+        vx: 0,
+        vy: 0,
+
+        /* Used for brightness/size variation. */
+        darkness,
+
+        phase: Math.random() * Math.PI * 2,
+        size: CONFIG.particleSize * (0.65 + darkness * 0.75)
+      });
+    }
+  }
+
+  /*
+    If a very large source creates too many points,
+    randomly reduce the array to keep animation smooth.
+  */
+  if (particles.length > CONFIG.maxParticles) {
+    particles = particles
+      .sort(() => Math.random() - 0.5)
+      .slice(0, CONFIG.maxParticles);
+  }
+}
+
+/* =========================
+   MOUSE / POINTER
+========================= */
+function updatePointer(x, y) {
+  if (mouse.lastX > -9000) {
+    mouse.vx = x - mouse.lastX;
+    mouse.vy = y - mouse.lastY;
+  }
+
+  mouse.x = x;
+  mouse.y = y;
+  mouse.lastX = x;
+  mouse.lastY = y;
+  mouse.active = true;
+}
+
+canvas.addEventListener("pointermove", (e) => {
+  updatePointer(e.clientX, e.clientY);
+});
+
+canvas.addEventListener("pointerenter", (e) => {
+  updatePointer(e.clientX, e.clientY);
+  mouse.active = true;
+});
+
+canvas.addEventListener("pointerleave", () => {
+  mouse.active = false;
+  mouse.vx *= 0.25;
+  mouse.vy *= 0.25;
+});
+
+/* Touch support. */
+canvas.addEventListener("touchstart", (e) => {
+  if (!e.touches.length) return;
+  const t = e.touches[0];
+  updatePointer(t.clientX, t.clientY);
+}, { passive: true });
+
+canvas.addEventListener("touchmove", (e) => {
+  if (!e.touches.length) return;
+  const t = e.touches[0];
+  updatePointer(t.clientX, t.clientY);
+}, { passive: true });
+
+canvas.addEventListener("touchend", () => {
+  mouse.active = false;
+});
+
+/* =========================
+   PARTICLE PHYSICS
+========================= */
+function updateParticles(dt, time) {
+  const radius = CONFIG.interactionRadius;
+  const radiusSq = radius * radius;
+
+  /*
+    Convert frame time to a roughly 60 FPS time scale.
+    This keeps the physics stable on different refresh rates.
+  */
+  const frame = Math.min(2, dt / 16.67);
+
+  for (const p of particles) {
+
+    /* Spring return force. */
+    let fx = (p.ox - p.x) * CONFIG.springStrength;
+    let fy = (p.oy - p.y) * CONFIG.springStrength;
+
+    /*
+      Very subtle horizontal/wavy field.
+      It is strongest around the actual portrait rather than the whole screen.
+    */
+    const wave =
+      Math.sin(
+        p.ox * 0.025 +
+        time * 0.0015 +
+        p.phase
+      ) * CONFIG.waveStrength * p.darkness;
+
+    fy += wave;
+
+    if (mouse.active) {
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const distSq = dx * dx + dy * dy;
+
+      if (distSq < radiusSq) {
+        const dist = Math.sqrt(distSq) || 0.001;
+
+        /*
+          Smooth falloff:
+          1 near cursor -> 0 at edge.
+        */
+        const falloff = Math.pow(1 - dist / radius, 2);
+
+        const nx = dx / dist;
+        const ny = dy / dist;
+
+        /*
+          1. Radial push.
+          This keeps particles from simply disappearing into the cursor.
+        */
+        const radial =
+          CONFIG.interactionStrength *
+          falloff *
+          (0.45 + Math.min(2.0, Math.hypot(mouse.vx, mouse.vy) * 0.08));
+
+        fx += nx * radial;
+        fy += ny * radial;
+
+        /*
+          2. Tangential/swirl force.
+          Rotate the radial vector 90 degrees to make particles
+          flow around the cursor like water.
+        */
+        const tangentX = -ny;
+        const tangentY = nx;
+
+        const mouseSpeed = Math.min(
+          4,
+          Math.hypot(mouse.vx, mouse.vy)
+        );
+
+        const swirl =
+          CONFIG.swirlStrength *
+          falloff *
+          (0.35 + mouseSpeed * 0.12);
+
+        fx += tangentX * swirl;
+        fy += tangentY * swirl;
+
+        /*
+          3. Mouse movement direction.
+          Fast cursor movement creates a soft wake behind it.
+        */
+        fx += mouse.vx * falloff * 0.055;
+        fy += mouse.vy * falloff * 0.055;
+      }
+    }
+
+    /* Integrate velocity. */
+    p.vx += fx * frame;
+    p.vy += fy * frame;
+
+    /* Damping / friction. */
+    p.vx *= Math.pow(CONFIG.damping, frame);
+    p.vy *= Math.pow(CONFIG.damping, frame);
+
+    /* Limit extreme velocity. */
+    const speed = Math.hypot(p.vx, p.vy);
+    const maxSpeed = 8;
+
+    if (speed > maxSpeed) {
+      p.vx = (p.vx / speed) * maxSpeed;
+      p.vy = (p.vy / speed) * maxSpeed;
+    }
+
+    p.x += p.vx * frame;
+    p.y += p.vy * frame;
+  }
+
+  /*
+    Mouse velocity decays when the pointer stops.
+    Therefore particles don't keep receiving a permanent push.
+  */
+  mouse.vx *= Math.pow(0.72, frame);
+  mouse.vy *= Math.pow(0.72, frame);
+}
+
+/* =========================
+   RENDER
+========================= */
+function render(time) {
+  ctx.fillStyle = "#061426";
+  ctx.fillRect(0, 0, W, H);
+
+  /*
+    Particles are rendered individually.
+    The original image is NEVER drawn to the visible canvas.
+  */
+  for (const p of particles) {
+
+    /*
+      Darkness controls opacity:
+      darker image areas -> brighter/dense cyan particles.
+    */
+    const alpha =
+      CONFIG.particleOpacity *
+      (0.25 + p.darkness * 0.95);
+
+    ctx.globalAlpha = Math.min(1, alpha);
+
+    /*
+      Tiny variation in size gives the portrait a more organic
+      ASCII/digital-water appearance.
+    */
+    const pulse =
+      1 +
+      Math.sin(time * 0.002 + p.phase) * 0.08;
+
+    const size = p.size * pulse;
+
+    ctx.fillStyle = CONFIG.particleColor;
+
+    /*
+      Mostly dots. Very bright/dark regions occasionally become
+      tiny "+" characters, giving an ASCII-like texture.
+    */
+    if (p.darkness > 0.68 && p.size > 1) {
+      const s = size * 0.75;
+
+      ctx.fillRect(p.x - s, p.y - 0.35, s * 2, 0.7);
+      ctx.fillRect(p.x - 0.35, p.y - s, 0.7, s * 2);
+    } else {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  ctx.globalAlpha = 1;
+
+  /*
+    Cursor glow is intentionally subtle and transparent.
+    It does not replace the particle interaction.
+  */
+  if (mouse.active) {
+    const g = ctx.createRadialGradient(
+      mouse.x, mouse.y, 0,
+      mouse.x, mouse.y, mouse.radius || CONFIG.interactionRadius
+    );
+
+    g.addColorStop(0, "rgba(69,243,223,0.035)");
+    g.addColorStop(0.55, "rgba(69,243,223,0.012)");
+    g.addColorStop(1, "rgba(69,243,223,0)");
+
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(
+      mouse.x,
+      mouse.y,
+      mouse.radius || CONFIG.interactionRadius,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+  }
+}
+
+/* =========================
+   ANIMATION LOOP
+========================= */
+function animate(now) {
+  const dt = Math.min(40, now - lastTime);
+  lastTime = now;
+
+  /* Smoothly grow/shrink the interaction radius. */
+  const targetRadius = mouse.active
+    ? CONFIG.interactionRadius
+    : 0;
+
+  mouse.radius +=
+    (targetRadius - mouse.radius) * 0.12;
+
+  updateParticles(dt, now);
+  render(now);
+
+  requestAnimationFrame(animate);
+}
+
+/* =========================
+   START
+========================= */
+sourceImage.onload = () => {
+  resize();
+  requestAnimationFrame(animate);
+};
+
+sourceImage.onerror = () => {
+  ctx.fillStyle = "#061426";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = "#45f3df";
+  ctx.font = "16px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    "source.png could not be loaded.",
+    W / 2,
+    H / 2
+  );
+};
+
+window.addEventListener("resize", resize);
+</script>
+</body>
+</html> -->
