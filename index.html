@@ -403,8 +403,10 @@ body::before {
 
         .about-text {
             color: var(--muted);
-
-            font-size: 18px;
+          
+           
+             text-align: center; 
+           font-size: 18px;
 
             line-height: 1.9;
         }
@@ -415,12 +417,17 @@ body::before {
             border: 1px solid var(--border);
 
             border-radius: 10px;
-
+            
             padding: 30px;
-
+           
             transition: 0.3s ease;
         }
-
+        #profilePic{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
         .about-card:hover {
             border-color: var(--accent);
 
@@ -445,7 +452,7 @@ body::before {
         ========================= */
 
         .experience {
-            background: #07172a;
+            background: #10002b;
         }
 
         .experience-item {
@@ -926,7 +933,7 @@ body::before {
 
 
         <div class="about-grid">
-
+         
             <div>
 
                 <p class="about-text">
@@ -942,17 +949,13 @@ body::before {
 
             </div>
 
-              <hr>
+            
             <div class="about-card">
 
-                <h3>
-                    What I do
-                </h3>
+                
 
                 <p>
-                    I work on software projects, interactive
-                    experiences, creative coding and experiments
-                    combining technology with art.
+                    <img id="profilePic" src="source.png" alt="img here">
                 </p>
 
             </div>
@@ -969,24 +972,26 @@ body::before {
     <section id="experience" class="experience">
 
         <h2 class="section-title">
-            experience
+            projects
         </h2>
 
 
         <div class="experience-item">
 
             <h3>
-                Software Engineering
+                Expenzo - Expense Tracker
             </h3>
 
             <div class="date">
-                2024 — Present
+                React.js,Redux Toolkit, and Tailwind CSS
             </div>
 
             <p>
-                Building software systems, experimenting with
-                machine learning and developing interactive
-                digital experiences.
+            • Implemented CRUD operations to add, edit, delete, and view expense records. <br>
+            • Used Redux Toolkit for centralized and efficient state management across components. <br>
+            • Implemented localStorage to persist expense data across browser refreshes and sessions. <br>
+            • Added real-time expense calculation using JavaScript’s reduce() method. <br>
+            • Built reusable components such as ExpenseForm, ExpenseList, ExpenseItem, and Summary
             </p>
 
         </div>
