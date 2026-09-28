@@ -7,723 +7,7 @@
 
     <title>Ankana Das | Portfolio</title>
 
-    <style>
-        /* =========================
-           ROOT
-        ========================= */
-
-        :root {
-            --bg: #10002b;
-            --bg-light: #240046;
-            --border: #332658;
-
-            --text: #c8d3ee;
-            --muted: #8d9bb8;
-
-            --accent: #e0aaff;
-            --accent-soft: rgba(142, 69, 243, 0.15);
-
-            --white: #e4ebff;
-        }
-
-
-        /* =========================
-           RESET
-        ========================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            overflow-x: hidden;
-        }
-          /* =========================
-   MOVING BACKGROUND GRID
-========================= */
-
-body {
-    position: relative;
-    background: #10002b;
-}
-
-/* Grid layer */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-
-    background-image:
-        linear-gradient(
-            rgba(159, 69, 243, 0.08) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(176, 69, 243, 0.08) 1px,
-            transparent 1px
-        );
-
-    background-size: 50px 50px;
-
-    transform: perspective(500px) rotateX(0deg) scale(1);
-
-    transform-origin: center top;
-
-    animation: moveGrid 5s linear infinite;
-
-    pointer-events: none;
-
-    z-index: -1;
-}
-
-
-/* Grid movement */
-@keyframes moveGrid {
-
-    from {
-        background-position:
-            0 0,
-            0 0;
-    }
-
-    to {
-        background-position:
-            0 50px,
-            50px 0;
-    }
-
-}
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-
-        /* =========================
-           NAVBAR
-        ========================= */
-
-        nav {
-            height: 72px;
-
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-
-            display: flex;
-            align-items: center;
-
-            padding: 0 7%;
-
-            position: sticky;
-            top: 0;
-
-            background: rgba(36, 9, 54, 0.95);
-
-            backdrop-filter: blur(10px);
-
-            z-index: 1000;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-
-            gap: 32px;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: 700;
-
-            color: var(--white);
-
-            margin-right: 5px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-
-            gap: 25px;
-        }
-
-        .nav-links a {
-            color: var(--white);
-
-            font-size: 15px;
-            font-weight: 600;
-
-            transition: 0.25s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-
-        /* RIGHT NAV ICONS */
-
-        .nav-icons {
-            margin-left: auto;
-
-            display: flex;
-            align-items: center;
-
-            gap: 22px;
-        }
-
-        .nav-icons a {
-            width: 23px;
-            height: 23px;
-
-            color: var(--white);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            transition: 0.25s ease;
-        }
-
-        .nav-icons a:hover {
-            color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .nav-icons svg {
-            width: 20px;
-            height: 20px;
-
-            fill: currentColor;
-        }
-
-
-        /* =========================
-           GAME MODE
-        ========================= */
-
-     
-
-        /* =========================
-           HERO
-        ========================= */
-
-        .hero {
-            min-height: 690px;
-
-            width: 100%;
-
-            display: flex;
-            align-items: center;
-
-            padding: 90px 8% 80px;
-
-            gap: 40px;
-        }
-
-
-        /* =========================
-           LEFT - PARTICLE PORTRAIT
-        ========================= */
-
-        .portrait-wrapper {
-            width: 30%;
-
-            height: 470px;
-
-            min-width: 280px;
-
-            position: relative;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            overflow: hidden;
-        }
-
-        #canvas {
-            display: block;
-
-            width: 100%;
-            height: 100%;
-
-            cursor: crosshair;
-        }
-
-
-        /* =========================
-           RIGHT - HERO TEXT
-        ========================= */
-
-        .hero-content {
-            width: 70%;
-
-            padding-left: 15px;
-        }
-
-        .hero-title {
-            font-size: clamp(48px, 5vw, 72px);
-
-            line-height: 1.05;
-
-            font-weight: 500;
-
-            color: var(--white);
-
-            margin-bottom: 45px;
-        }
-
-        .hero-title .name {
-            color: var(--accent);
-
-            font-weight: 700;
-        }
-
-        .hero-description {
-            max-width: 680px;
-
-            font-size: 20px;
-
-            line-height: 1.8;
-
-            color: var(--muted);
-
-            margin-bottom: 45px;
-        }
-
-
-        /* =========================
-           SAY HI BUTTON
-        ========================= */
-
-        .say-hi {
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            padding: 17px 40px;
-
-            border: 1px solid var(--accent);
-
-            border-radius: 5px;
-
-            background: transparent;
-
-            color: var(--accent);
-
-            font-size: 16px;
-
-            font-weight: 700;
-
-            cursor: pointer;
-
-            transition: 0.3s ease;
-        }
-
-        .say-hi:hover {
-            background: var(--accent-soft);
-
-            transform: translateY(-3px);
-
-            box-shadow:
-                0 10px 30px rgba(124, 69, 243, 0.1);
-        }
-
-        .say-hi svg {
-            width: 23px;
-            height: 23px;
-
-            fill: currentColor;
-        }
-
-
-        /* =========================
-           GENERAL SECTIONS
-        ========================= */
-
-        section {
-            padding: 100px 8%;
-
-            scroll-margin-top: 70px;
-        }
-
-        .section-title {
-            font-size: 52px;
-
-            color: var(--white);
-
-            font-weight: 600;
-
-            margin-bottom: 55px;
-        }
-
-        .section-title::before {
-            content: "/";
-            color: var(--accent);
-
-            margin-right: 8px;
-        }
-
-
-        /* =========================
-           ABOUT
-        ========================= */
-
-        .about {
-            border-top: 1px solid rgba(38, 59, 88, 0.5);
-        }
-
-        .about-grid {
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
-            gap: 60px;
-
-            max-width: 1100px;
-        }
-
-        .about-text {
-            color: var(--muted);
-          
-           
-             text-align: center; 
-           font-size: 18px;
-
-            line-height: 1.9;
-        }
-
-        .about-card {
-            background: var(--bg-light);
-
-            border: 1px solid var(--border);
-
-            border-radius: 10px;
-            
-            padding: 30px;
-           
-            transition: 0.3s ease;
-        }
-        #profilePic{
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 16px;
-        }
-        .about-card:hover {
-            border-color: var(--accent);
-
-            transform: translateY(-5px);
-        }
-
-        .about-card h3 {
-            color: var(--accent);
-
-            margin-bottom: 15px;
-        }
-
-        .about-card p {
-            color: var(--muted);
-
-            line-height: 1.7;
-        }
-
-
-        /* =========================
-           EXPERIENCE
-        ========================= */
-
-        .experience {
-            background: #10002b;
-        }
-
-        .experience-item {
-            max-width: 950px;
-
-            border-left: 2px solid var(--accent);
-
-            padding-left: 30px;
-
-            margin-bottom: 45px;
-        }
-
-        .experience-item h3 {
-            color: var(--white);
-
-            font-size: 24px;
-
-            margin-bottom: 8px;
-        }
-
-        .experience-item .date {
-            color: var(--accent);
-
-            font-size: 14px;
-
-            margin-bottom: 15px;
-        }
-
-        .experience-item p {
-            color: var(--muted);
-
-            line-height: 1.8;
-        }
-
-
-        /* =========================
-           SOFTWARE / HARDWARE
-        ========================= */
-
-        .skills-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 20px;
-
-            max-width: 1100px;
-        }
-
-        .skill-card {
-            background: var(--bg-light);
-
-            border: 1px solid var(--border);
-
-            padding: 28px;
-
-            border-radius: 8px;
-
-            transition: 0.3s ease;
-        }
-
-        .skill-card:hover {
-            border-color: var(--accent);
-
-            transform: translateY(-5px);
-        }
-
-        .skill-card h3 {
-            color: var(--white);
-
-            margin-bottom: 12px;
-        }
-
-        .skill-card p {
-            color: var(--muted);
-
-            line-height: 1.7;
-        }
-
-
-        /* =========================
-           ART
-        ========================= */
-
-        .art {
-            background: #07172a;
-        }
-
-        .art-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 20px;
-        }
-
-        .art-box {
-            height: 250px;
-
-            border: 1px solid var(--border);
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(69, 243, 223, 0.08),
-                    transparent 65%
-                );
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            color: var(--accent);
-
-            font-size: 20px;
-
-            border-radius: 10px;
-
-            transition: 0.3s ease;
-        }
-
-        .art-box:hover {
-            border-color: var(--accent);
-
-            transform: scale(1.02);
-        }
-
-
-        /* =========================
-           FOOTER
-        ========================= */
-
-        footer {
-            border-top: 1px solid var(--border);
-
-            padding: 35px 8%;
-
-            color: var(--muted);
-
-            text-align: center;
-        }
-
-
-        /* =========================
-           SCROLLBAR
-        ========================= */
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #263b58;
-
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
-        }
-
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 900px) {
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero {
-                flex-direction: column;
-
-                padding-top: 100px;
-            }
-
-            .portrait-wrapper {
-                width: 80%;
-
-                max-width: 450px;
-
-                height: 400px;
-            }
-
-            .hero-content {
-                width: 100%;
-
-                padding-left: 0;
-
-                text-align: center;
-            }
-
-            .hero-description {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .skills-grid,
-            .art-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-
-        @media (max-width: 600px) {
-
-            nav {
-                padding: 0 20px;
-            }
-
-            .nav-icons {
-                gap: 12px;
-            }
-
-            .logo {
-                font-size: 17px;
-            }
-
-            .game-mode {
-                display: none;
-            }
-
-            .hero {
-                padding: 70px 20px;
-            }
-
-            .portrait-wrapper {
-                width: 100%;
-
-                height: 350px;
-
-                min-width: 0;
-            }
-
-            .hero-title {
-                font-size: 42px;
-
-                margin-bottom: 30px;
-            }
-
-            .hero-description {
-                font-size: 16px;
-            }
-
-            section {
-                padding: 70px 20px;
-            }
-
-            .section-title {
-                font-size: 40px;
-            }
-
-            .skills-grid,
-            .art-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+        <link rel="stylesheet" href="style.css">
 </head>
 
 
@@ -756,8 +40,8 @@ body::before {
                     Experience
                 </a>
 
-                <a href="#software">
-                    Software
+                <a href="#projects">
+                    Projects
                 </a>
 
                 <a href="#hardware">
@@ -899,22 +183,7 @@ body::before {
             </p>
 
 
-            <a href="mailto:ankanadaswork123@gmail.com"
-               class="say-hi">
-
-                <svg viewBox="0 0 24 24">
-
-                    <path d="M20 4H4c-1.1 0-2
-                    .9-2 2v12c0 1.1.9 2
-                    2 2h16c1.1 0 2-.9
-                    2-2V6c0-1.1-.9-2-2-2zm0
-                    4-8 5-8-5V6l8 5 8-5v2z"/>
-
-                </svg>
-
-                Let's Connect!
-
-            </a>
+           
 
         </div>
 
@@ -946,40 +215,47 @@ body::before {
                     that feel different from traditional websites.
 
                 </p>
+                 <a href="mailto:ankanadaswork123@gmail.com"
+               class="say-hi">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M20 4H4c-1.1 0-2
+                    .9-2 2v12c0 1.1.9 2
+                    2 2h16c1.1 0 2-.9
+                    2-2V6c0-1.1-.9-2-2-2zm0
+                    4-8 5-8-5V6l8 5 8-5v2z"/>
+
+                </svg>
+
+                Let's Connect!
+
+            </a>
 
             </div>
 
             
-            <div class="about-card">
-
-                
-
-                <p>
-                    <img id="profilePic" src="source.png" alt="img here">
-                </p>
-
+           
             </div>
 
-        </div>
-
-    </section>
+        </section>
 
 
     <!-- =========================
-         EXPERIENCE
+         TECH STACK
     ========================= -->
-
+        <hr>
     <section id="experience" class="experience">
 
         <h2 class="section-title">
-            projects
+            tech Stack
         </h2>
-
+        <div class="expBox">
 
         <div class="experience-item">
 
             <h3>
-                Expenzo - Expense Tracker
+               Languages
             </h3>
 
             <div class="date">
@@ -987,11 +263,12 @@ body::before {
             </div>
 
             <p>
-            • Implemented CRUD operations to add, edit, delete, and view expense records. <br>
-            • Used Redux Toolkit for centralized and efficient state management across components. <br>
-            • Implemented localStorage to persist expense data across browser refreshes and sessions. <br>
-            • Added real-time expense calculation using JavaScript’s reduce() method. <br>
-            • Built reusable components such as ExpenseForm, ExpenseList, ExpenseItem, and Summary
+            C <br>
+            C++ <br>
+            Javascript <br>
+            Java <br>
+            
+
             </p>
 
         </div>
@@ -1000,7 +277,7 @@ body::before {
         <div class="experience-item">
 
             <h3>
-                Creative Technology
+                Frontend
             </h3>
 
             <div class="date">
@@ -1008,67 +285,156 @@ body::before {
             </div>
 
             <p>
-                Exploring the intersection of programming,
-                visual design, digital art and interactive
-                installations.
+                Html <br>
+                CSS <br>
+                Tailwind CSS <br>
+                Javascript <br>
+                React <br>
+
             </p>
 
         </div>
+
+         <div class="experience-item">
+
+            <h3>
+                Backend
+            </h3>
+
+            <div class="date">
+                2023 — Present
+            </div>
+
+            <p>
+                Mongo DB <br>
+                
+                
+            </p>
+
+        </div>
+        </div>
+
 
     </section>
 
 
     <!-- =========================
-         SOFTWARE
+        PROJECTS
     ========================= -->
+    <hr>
+    <section class="projects-section" id="projects">
 
-    <section id="software">
-
-        <h2 class="section-title">
-            software
+        <h2 class="project-title">
+           Things I have build
         </h2>
 
+        <div class="projects-container">
 
-        <div class="skills-grid">
+            <!-- PROJECT 1 -->
+            <div class="project-card">
 
-            <div class="skill-card">
+                <div class="project-image">
+                    <img src="project1.png" alt="Vaarta Project">
+                </div>
 
-                <h3>
-                    Programming
-                </h3>
+                <div class="project-content">
 
-                <p>
-                    JavaScript, Python, C++, HTML and CSS.
-                </p>
+                    <div class="project-tag">
+                        BHASHA QUEST
+                    </div>
+
+                    <div class="project-title-row">
+                        
+                        <span class="arrow">↗</span>
+                    </div>
+
+                    <p>
+                        AI pixel-art RPG that teaches Indian languages
+                        through real conversation.
+                    </p>
+
+                </div>
 
             </div>
 
 
-            <div class="skill-card">
+            <!-- PROJECT 2 -->
+            <div class="project-card">
+                
 
-                <h3>
-                    Web Development
-                </h3>
+                <div class="project-image">
+                    <img src="expenzo.png" alt="Scout Project">
+                </div>
+               
+                <div class="project-content">
+                     <div class="project-tag">
+                       EXPENZO
+                    </div> 
+                    <div class="project-title-row">
+                     
+                        <span class="arrow">↗</span>
+                    </div>
 
-                <p>
-                    Interactive websites, animations,
-                    frontend interfaces and creative web
-                    experiences.
-                </p>
+                    <p>
+                        AI agent that turns billion-row ClickHouse data
+                        into dashboards in seconds.
+                    </p>
+
+                </div>
 
             </div>
 
 
-            <div class="skill-card">
+            <!-- PROJECT 3 -->
+            <div class="project-card">
 
-                <h3>
-                    Machine Learning
-                </h3>
+                <div class="project-image">
+                    <img src="project2.png" alt="ChainCred Project">
+                </div>
 
-                <p>
-                    Machine learning experiments, data
-                    processing and intelligent applications.
-                </p>
+                <div class="project-content">
+                        <div class="project-tag">
+                        TWO LEAVES AND A BUD
+                    </div>
+
+
+                    <div class="project-title-row">
+                        
+                        <span class="arrow">↗</span>
+                    </div>
+
+                    <p>
+                        Issue, manage, and verify 100% decentralized
+                        digital certificates on Ethereum.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROJECT 4 -->
+            <div class="project-card">
+                   
+                <div class="project-image">
+                    <img src="project4.png" alt="ClipGrab Project">
+                </div>
+
+                <div class="project-content">
+                     <div class="project-tag">
+                       IDENTITY GENERATOR
+                    </div>
+                    <div class="project-title-row">
+                        
+                        <span class="arrow">↗</span>
+                    </div>
+
+                    <p>
+                        Instant video clipper for X, Instagram, Reddit,
+                        and Twitch built with Flask.
+                    </p>
+
+                </div>
 
             </div>
 
@@ -1081,10 +447,10 @@ body::before {
          HARDWARE
     ========================= -->
 
-    <section id="hardware">
+    <!-- <section id="hardware">
 
         <h2 class="section-title">
-            hardware
+           hobbies
         </h2>
 
 
@@ -1093,7 +459,7 @@ body::before {
             <div class="skill-card">
 
                 <h3>
-                    Computers
+                    Video Editing
                 </h3>
 
                 <p>
@@ -1107,7 +473,7 @@ body::before {
             <div class="skill-card">
 
                 <h3>
-                    Electronics
+                    Thumbnail Designer
                 </h3>
 
                 <p>
@@ -1121,7 +487,7 @@ body::before {
             <div class="skill-card">
 
                 <h3>
-                    Creative Devices
+                    Calligrapher
                 </h3>
 
                 <p>
@@ -1133,32 +499,32 @@ body::before {
 
         </div>
 
-    </section>
+    </section> -->
 
 
     <!-- =========================
-         ART
+        HOBBIES
     ========================= -->
-
+        <hr>
     <section id="art" class="art">
 
         <h2 class="section-title">
-            art
+            hobbies
         </h2>
 
 
         <div class="art-grid">
 
             <div class="art-box">
-                Digital Art
+                Video Editor
             </div>
 
             <div class="art-box">
-                Generative Art
+               Thumbnail Designer
             </div>
 
             <div class="art-box">
-                Creative Coding
+               Calligrapher
             </div>
 
         </div>
@@ -1169,7 +535,7 @@ body::before {
     <!-- =========================
          CONTACT
     ========================= -->
-
+    <hr>
     <section id="contact">
 
         <h2 class="section-title">
@@ -1204,8 +570,8 @@ body::before {
 
     <footer>
 
-        © 2026 Gazi Jarin.
-        Built with code & curiosity.
+        © 2026 Ankana Das.
+        
 
     </footer>
 
@@ -1215,1335 +581,13 @@ body::before {
          PARTICLE PORTRAIT JAVASCRIPT
     ====================================================== -->
 
-    <script>
-
-        /* =========================
-           CANVAS
-        ========================= */
-
-        const canvas =
-            document.getElementById("canvas");
-
-        const ctx =
-            canvas.getContext("2d", {
-                alpha: false
-            });
-
-
-        const container =
-            document.querySelector(".portrait-wrapper");
-
-
-        /* =========================
-           SOURCE IMAGE
-        ========================= */
-
-        const sourceImage =
-            new Image();
-
-        sourceImage.src =
-            "source.png";
-
-
-        /* =========================
-           VARIABLES
-        ========================= */
-
-        let particles = [];
-
-        let W = 0;
-        let H = 0;
-
-        let dpr = 1;
-
-        let imageBox = null;
-
-        let imageCanvas;
-        let imageCtx;
-        let imageData;
-
-        let lastTime =
-            performance.now();
-
-
-        /* =========================
-           CONFIG
-        ========================= */
-
-        const CONFIG = {
-
-            particleSpacing: 3.0,
-
-            particleSize: 1.0,
-
-            particleOpacity: 0.88,
-
-            particleColor: "#e0aaff",
-
-            interactionRadius: 110,
-
-            interactionStrength: 1.35,
-
-            springStrength: 0.075,
-
-            damping: 0.84,
-
-            swirlStrength: 1.75,
-
-            waveStrength: 0.22,
-
-            darknessThreshold: 0.055,
-
-            jitter: 0.55,
-
-            maxParticles: 1200000
-
-        };
-
-
-        /* =========================
-           MOUSE
-        ========================= */
-
-        const mouse = {
-
-            x: -9999,
-
-            y: -9999,
-
-            vx: 0,
-
-            vy: 0,
-
-            active: false,
-
-            lastX: -9999,
-
-            lastY: -9999,
-
-            radius: 0
-
-        };
-
-
-        /* =========================
-           RESIZE
-        ========================= */
-
-        function resize() {
-
-            dpr =
-                Math.min(
-                    window.devicePixelRatio || 1,
-                    2
-                );
-
-
-            /*
-                IMPORTANT:
-
-                Instead of using:
-
-                window.innerWidth
-                window.innerHeight
-
-                we use the size of the
-                30% portrait container.
-            */
-
-            W =
-                container.clientWidth;
-
-            H =
-                container.clientHeight;
-
-
-            canvas.width =
-                Math.floor(W * dpr);
-
-            canvas.height =
-                Math.floor(H * dpr);
-
-
-            canvas.style.width =
-                W + "px";
-
-            canvas.style.height =
-                H + "px";
-
-
-            ctx.setTransform(
-                dpr,
-                0,
-                0,
-                dpr,
-                0,
-                0
-            );
-
-
-            buildParticles();
-
-        }
-
-
-        /* =========================
-           BUILD PARTICLES
-        ========================= */
-
-        function buildParticles() {
-
-            if (
-                !sourceImage.complete ||
-                !sourceImage.naturalWidth
-            ) {
-                return;
-            }
-
-
-            /*
-                Create a small
-                invisible canvas for
-                reading image pixels.
-            */
-
-            const sampleScale =
-                Math.min(
-                    1,
-                    1000 /
-                    Math.max(
-                        sourceImage.naturalWidth,
-                        sourceImage.naturalHeight
-                    )
-                );
-
-
-            const iw =
-                Math.max(
-                    1,
-                    Math.floor(
-                        sourceImage.naturalWidth *
-                        sampleScale
-                    )
-                );
-
-
-            const ih =
-                Math.max(
-                    1,
-                    Math.floor(
-                        sourceImage.naturalHeight *
-                        sampleScale
-                    )
-                );
-
-
-            imageCanvas =
-                document.createElement(
-                    "canvas"
-                );
-
-
-            imageCanvas.width = iw;
-
-            imageCanvas.height = ih;
-
-
-            imageCtx =
-                imageCanvas.getContext(
-                    "2d",
-                    {
-                        willReadFrequently: true
-                    }
-                );
-
-
-            imageCtx.drawImage(
-                sourceImage,
-                0,
-                0,
-                iw,
-                ih
-            );
-
-
-            imageData =
-                imageCtx.getImageData(
-                    0,
-                    0,
-                    iw,
-                    ih
-                ).data;
-
-
-            /* =========================
-               PORTRAIT SIZE
-            ========================= */
-
-            const maxW =
-                W * 0.95;
-
-            const maxH =
-                H * 0.95;
-
-
-            const scale =
-                Math.min(
-
-                    maxW /
-                    sourceImage.naturalWidth,
-
-                    maxH /
-                    sourceImage.naturalHeight
-
-                );
-
-
-            const drawW =
-                sourceImage.naturalWidth *
-                scale;
-
-
-            const drawH =
-                sourceImage.naturalHeight *
-                scale;
-
-
-            /*
-                Center the portrait
-                inside the 30% area.
-            */
-
-            imageBox = {
-
-                x:
-                    (W - drawW) * 0.5,
-
-                y:
-                    (H - drawH) * 0.5,
-
-                width:
-                    drawW,
-
-                height:
-                    drawH
-
-            };
-
-
-            particles = [];
-
-
-            const step =
-                CONFIG.particleSpacing;
-
-
-            const sx =
-                iw / drawW;
-
-
-            const sy =
-                ih / drawH;
-
-
-            /* =========================
-               READ IMAGE
-            ========================= */
-
-            for (
-                let y = 0;
-                y < drawH;
-                y += step
-            ) {
-
-                for (
-                    let x = 0;
-                    x < drawW;
-                    x += step
-                ) {
-
-
-                    const px =
-                        Math.min(
-                            iw - 1,
-                            Math.floor(
-                                x * sx
-                            )
-                        );
-
-
-                    const py =
-                        Math.min(
-                            ih - 1,
-                            Math.floor(
-                                y * sy
-                            )
-                        );
-
-
-                    const index =
-                        (py * iw + px) * 4;
-
-
-                    const r =
-                        imageData[index];
-
-
-                    const g =
-                        imageData[index + 1];
-
-
-                    const b =
-                        imageData[index + 2];
-
-
-                    const a =
-                        imageData[index + 3] /
-                        255;
-
-
-                    if (a < 0.01) {
-                        continue;
-                    }
-
-
-                    /*
-                        Calculate brightness.
-                    */
-
-                    const luminance =
-
-                        (
-                            0.2126 * r +
-                            0.7152 * g +
-                            0.0722 * b
-                        ) / 255;
-
-
-                    const darkness =
-                        1 - luminance;
-
-
-                    /*
-                        Ignore white
-                        background.
-                    */
-
-                    if (
-                        darkness <
-                        CONFIG.darknessThreshold
-                    ) {
-                        continue;
-                    }
-
-
-                    /*
-                        Darker areas
-                        receive more particles.
-                    */
-
-                    const density =
-                        Math.min(
-                            1,
-                            Math.pow(
-                                darkness,
-                                0.72
-                            )
-                        );
-
-
-                    if (
-                        Math.random() >
-                        density
-                    ) {
-                        continue;
-                    }
-
-
-                    const ox =
-
-                        imageBox.x +
-                        x +
-                        (
-                            Math.random() -
-                            0.5
-                        ) *
-                        CONFIG.jitter;
-
-
-                    const oy =
-
-                        imageBox.y +
-                        y +
-                        (
-                            Math.random() -
-                            0.5
-                        ) *
-                        CONFIG.jitter;
-
-
-                    particles.push({
-
-                        x: ox,
-
-                        y: oy,
-
-                        ox: ox,
-
-                        oy: oy,
-
-                        vx: 0,
-
-                        vy: 0,
-
-                        darkness:
-
-                            darkness,
-
-                        phase:
-
-                            Math.random() *
-                            Math.PI *
-                            2,
-
-                        size:
-
-                            CONFIG.particleSize *
-                            (
-                                0.65 +
-                                darkness *
-                                0.75
-                            )
-
-                    });
-
-                }
-
-            }
-
-
-            /* =========================
-               PARTICLE LIMIT
-            ========================= */
-
-            if (
-                particles.length >
-                CONFIG.maxParticles
-            ) {
-
-                particles =
-                    particles
-                        .sort(
-                            () =>
-                                Math.random() -
-                                0.5
-                        )
-                        .slice(
-                            0,
-                            CONFIG.maxParticles
-                        );
-
-            }
-
-        }
-
-
-        /* =========================
-           POINTER
-        ========================= */
-
-        function updatePointer(
-            clientX,
-            clientY
-        ) {
-
-            const rect =
-                canvas.getBoundingClientRect();
-
-
-            /*
-                Convert browser
-                coordinates to
-                canvas-local coordinates.
-            */
-
-            const x =
-                clientX -
-                rect.left;
-
-
-            const y =
-                clientY -
-                rect.top;
-
-
-            if (
-                mouse.lastX > -9000
-            ) {
-
-                mouse.vx =
-                    x -
-                    mouse.lastX;
-
-                mouse.vy =
-                    y -
-                    mouse.lastY;
-
-            }
-
-
-            mouse.x = x;
-
-            mouse.y = y;
-
-            mouse.lastX = x;
-
-            mouse.lastY = y;
-
-            mouse.active = true;
-
-        }
-
-
-        /* =========================
-           MOUSE EVENTS
-        ========================= */
-
-        canvas.addEventListener(
-            "pointermove",
-            (e) => {
-
-                updatePointer(
-                    e.clientX,
-                    e.clientY
-                );
-
-            }
-        );
-
-
-        canvas.addEventListener(
-            "pointerenter",
-            (e) => {
-
-                updatePointer(
-                    e.clientX,
-                    e.clientY
-                );
-
-                mouse.active = true;
-
-            }
-        );
-
-
-        canvas.addEventListener(
-            "pointerleave",
-            () => {
-
-                mouse.active = false;
-
-                mouse.vx *= 0.25;
-
-                mouse.vy *= 0.25;
-
-            }
-        );
-
-
-        /* =========================
-           TOUCH
-        ========================= */
-
-        canvas.addEventListener(
-            "touchstart",
-            (e) => {
-
-                if (
-                    !e.touches.length
-                ) {
-                    return;
-                }
-
-
-                const t =
-                    e.touches[0];
-
-
-                updatePointer(
-                    t.clientX,
-                    t.clientY
-                );
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        canvas.addEventListener(
-            "touchmove",
-            (e) => {
-
-                if (
-                    !e.touches.length
-                ) {
-                    return;
-                }
-
-
-                const t =
-                    e.touches[0];
-
-
-                updatePointer(
-                    t.clientX,
-                    t.clientY
-                );
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        canvas.addEventListener(
-            "touchend",
-            () => {
-
-                mouse.active = false;
-
-            }
-        );
-
-
-        /* =========================
-           PARTICLE PHYSICS
-        ========================= */
-
-        function updateParticles(
-            dt,
-            time
-        ) {
-
-            const radius =
-                CONFIG.interactionRadius;
-
-
-            const radiusSq =
-                radius * radius;
-
-
-            const frame =
-                Math.min(
-                    2,
-                    dt / 16.67
-                );
-
-
-            for (
-                const p of particles
-            ) {
-
-
-                /* =========================
-                   SPRING
-                ========================= */
-
-                let fx =
-                    (
-                        p.ox -
-                        p.x
-                    ) *
-                    CONFIG.springStrength;
-
-
-                let fy =
-                    (
-                        p.oy -
-                        p.y
-                    ) *
-                    CONFIG.springStrength;
-
-
-                /* =========================
-                   WAVE
-                ========================= */
-
-                const wave =
-
-                    Math.sin(
-
-                        p.ox *
-                        0.025 +
-
-                        time *
-                        0.0015 +
-
-                        p.phase
-
-                    ) *
-                    CONFIG.waveStrength *
-                    p.darkness;
-
-
-                fy += wave;
-
-
-                /* =========================
-                   MOUSE
-                ========================= */
-
-                if (
-                    mouse.active
-                ) {
-
-                    const dx =
-                        p.x -
-                        mouse.x;
-
-
-                    const dy =
-                        p.y -
-                        mouse.y;
-
-
-                    const distSq =
-                        dx * dx +
-                        dy * dy;
-
-
-                    if (
-                        distSq <
-                        radiusSq
-                    ) {
-
-                        const dist =
-                            Math.sqrt(
-                                distSq
-                            ) ||
-                            0.001;
-
-
-                        const falloff =
-                            Math.pow(
-                                1 -
-                                dist /
-                                radius,
-                                2
-                            );
-
-
-                        const nx =
-                            dx / dist;
-
-
-                        const ny =
-                            dy / dist;
-
-
-                        /* RADIAL PUSH */
-
-                        const radial =
-
-                            CONFIG.interactionStrength *
-                            falloff *
-                            (
-                                0.45 +
-                                Math.min(
-                                    2.0,
-                                    Math.hypot(
-                                        mouse.vx,
-                                        mouse.vy
-                                    ) *
-                                    0.08
-                                )
-                            );
-
-
-                        fx +=
-                            nx *
-                            radial;
-
-
-                        fy +=
-                            ny *
-                            radial;
-
-
-                        /* SWIRL */
-
-                        const tangentX =
-                            -ny;
-
-
-                        const tangentY =
-                            nx;
-
-
-                        const mouseSpeed =
-                            Math.min(
-                                4,
-                                Math.hypot(
-                                    mouse.vx,
-                                    mouse.vy
-                                )
-                            );
-
-
-                        const swirl =
-
-                            CONFIG.swirlStrength *
-                            falloff *
-                            (
-                                0.35 +
-                                mouseSpeed *
-                                0.12
-                            );
-
-
-                        fx +=
-                            tangentX *
-                            swirl;
-
-
-                        fy +=
-                            tangentY *
-                            swirl;
-
-
-                        /* MOUSE WAKE */
-
-                        fx +=
-                            mouse.vx *
-                            falloff *
-                            0.055;
-
-
-                        fy +=
-                            mouse.vy *
-                            falloff *
-                            0.055;
-
-                    }
-
-                }
-
-
-                /* =========================
-                   VELOCITY
-                ========================= */
-
-                p.vx +=
-                    fx *
-                    frame;
-
-
-                p.vy +=
-                    fy *
-                    frame;
-
-
-                /* DAMPING */
-
-                p.vx *=
-                    Math.pow(
-                        CONFIG.damping,
-                        frame
-                    );
-
-
-                p.vy *=
-                    Math.pow(
-                        CONFIG.damping,
-                        frame
-                    );
-
-
-                /* SPEED LIMIT */
-
-                const speed =
-                    Math.hypot(
-                        p.vx,
-                        p.vy
-                    );
-
-
-                const maxSpeed = 8;
-
-
-                if (
-                    speed >
-                    maxSpeed
-                ) {
-
-                    p.vx =
-                        (
-                            p.vx /
-                            speed
-                        ) *
-                        maxSpeed;
-
-
-                    p.vy =
-                        (
-                            p.vy /
-                            speed
-                        ) *
-                        maxSpeed;
-
-                }
-
-
-                /* POSITION */
-
-                p.x +=
-                    p.vx *
-                    frame;
-
-
-                p.y +=
-                    p.vy *
-                    frame;
-
-            }
-
-
-            /* Mouse friction */
-
-            mouse.vx *=
-                Math.pow(
-                    0.72,
-                    frame
-                );
-
-
-            mouse.vy *=
-                Math.pow(
-                    0.72,
-                    frame
-                );
-
-        }
-
-
-        /* =========================
-           RENDER
-        ========================= */
-
-        function render(time) {
-
-            /*
-                Dark background.
-            */
-
-            ctx.fillStyle =
-                "#10002b";
-
-
-            ctx.fillRect(
-                0,
-                0,
-                W,
-                H
-            );
-
-
-            /* =========================
-               PARTICLES
-            ========================= */
-
-            for (
-                const p of particles
-            ) {
-
-                const alpha =
-
-                    CONFIG.particleOpacity *
-                    (
-                        0.25 +
-                        p.darkness *
-                        0.95
-                    );
-
-
-                ctx.globalAlpha =
-                    Math.min(
-                        1,
-                        alpha
-                    );
-
-
-                /* Small pulse */
-
-                const pulse =
-
-                    1 +
-                    Math.sin(
-                        time *
-                        0.002 +
-                        p.phase
-                    ) *
-                    0.08;
-
-
-                const size =
-                    p.size *
-                    pulse;
-
-
-                ctx.fillStyle =
-                    CONFIG.particleColor;
-
-
-                /*
-                    Dark areas become
-                    small "+" characters.
-                */
-
-                if (
-                    p.darkness >
-                    0.68 &&
-                    p.size > 1
-                ) {
-
-                    const s =
-                        size *
-                        0.75;
-
-
-                    ctx.fillRect(
-                        p.x - s,
-                        p.y - 0.35,
-                        s * 2,
-                        0.7
-                    );
-
-
-                    ctx.fillRect(
-                        p.x - 0.35,
-                        p.y - s,
-                        0.7,
-                        s * 2
-                    );
-
-                } else {
-
-                    ctx.beginPath();
-
-
-                    ctx.arc(
-                        p.x,
-                        p.y,
-                        size,
-                        0,
-                        Math.PI * 2
-                    );
-
-
-                    ctx.fill();
-
-                }
-
-            }
-
-
-            ctx.globalAlpha = 1;
-
-
-            /* =========================
-               MOUSE GLOW
-            ========================= */
-
-            if (
-                mouse.active
-            ) {
-
-                const radius =
-                    mouse.radius ||
-                    CONFIG.interactionRadius;
-
-
-                const gradient =
-                    ctx.createRadialGradient(
-
-                        mouse.x,
-                        mouse.y,
-                        0,
-
-                        mouse.x,
-                        mouse.y,
-                        radius
-
-                    );
-
-
-                gradient.addColorStop(
-                    0,
-                    "rgba(69,243,223,0.05)"
-                );
-
-
-                gradient.addColorStop(
-                    0.55,
-                    "rgba(69,243,223,0.015)"
-                );
-
-
-                gradient.addColorStop(
-                    1,
-                    "rgba(69,243,223,0)"
-                );
-
-
-                ctx.fillStyle =
-                    gradient;
-
-
-                ctx.beginPath();
-
-
-                ctx.arc(
-                    mouse.x,
-                    mouse.y,
-                    radius,
-                    0,
-                    Math.PI * 2
-                );
-
-
-                ctx.fill();
-
-            }
-
-        }
-
-
-        /* =========================
-           ANIMATION LOOP
-        ========================= */
-
-        function animate(now) {
-
-            const dt =
-                Math.min(
-                    40,
-                    now -
-                    lastTime
-                );
-
-
-            lastTime =
-                now;
-
-
-            const targetRadius =
-                mouse.active
-                    ? CONFIG.interactionRadius
-                    : 0;
-
-
-            mouse.radius +=
-
-                (
-                    targetRadius -
-                    mouse.radius
-                ) *
-                0.12;
-
-
-            updateParticles(
-                dt,
-                now
-            );
-
-
-            render(
-                now
-            );
-
-
-            requestAnimationFrame(
-                animate
-            );
-
-        }
-
-
-        /* =========================
-           IMAGE LOAD
-        ========================= */
-
-        sourceImage.onload = () => {
-
-            resize();
-
-            requestAnimationFrame(
-                animate
-            );
-
-        };
-
-
-        /* =========================
-           IMAGE ERROR
-        ========================= */
-
-        sourceImage.onerror = () => {
-
-            W =
-                container.clientWidth;
-
-            H =
-                container.clientHeight;
-
-
-            ctx.fillStyle =
-                "#061426";
-
-
-            ctx.fillRect(
-                0,
-                0,
-                W,
-                H
-            );
-
-
-            ctx.fillStyle =
-                "#45f3df";
-
-
-            ctx.font =
-                "14px Arial";
-
-
-            ctx.textAlign =
-                "center";
-
-
-            ctx.fillText(
-                "source.png could not be loaded",
-                W / 2,
-                H / 2
-            );
-
-        };
-
-
-        /* =========================
-           WINDOW RESIZE
-        ========================= */
-
-        window.addEventListener(
-            "resize",
-            resize
-        );
-
-    </script>
+        <script src="script.js" defer></script>
 
 </body>
 
 </html>
+
+
+
+
+ 
