@@ -276,6 +276,8 @@ body::before {
             color: var(--white);
 
             margin-bottom: 45px;
+            
+       
         }
 
         .hero-title .name {
@@ -371,7 +373,47 @@ body::before {
             margin-right: 8px;
         }
 
+        .typing {
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
 
+    border-right: 3px solid rgb(88, 93, 93);
+
+    font-size: 30px;
+    color: rgb(98, 98, 98);
+
+    animation:
+        typing 8s steps(15) infinite,
+        blink 1s infinite;
+}
+
+@keyframes typing {
+
+    0% {
+        width: 0;
+    }
+
+    40% {
+        width: 23ch;
+    }
+
+    60% {
+        width: 23ch;
+    }
+
+    100% {
+        width: 10;
+    }
+}
+
+@keyframes blink {
+
+    20% {
+        border-color: transparent;
+    }
+
+}
         /* =========================
            ABOUT
         ========================= */
