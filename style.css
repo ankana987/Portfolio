@@ -377,11 +377,11 @@ body::before {
     width: 0;
     overflow: hidden;
     white-space: nowrap;
+            gap: 5px;
+    border-right: 3px solid rgb(239, 239, 239);
 
-    border-right: 3px solid rgb(88, 93, 93);
-
-    font-size: 30px;
-    color: rgb(98, 98, 98);
+    font-size: 22px;
+    color: rgb(255, 255, 255);
 
     animation:
         typing 8s steps(15) infinite,
@@ -998,4 +998,19 @@ body::before {
             .about-image-box {
                 height: 350px;
             }
+        }
+
+        .last{
+           background: #240046;
+        }
+        .lastImg{
+           width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+        }
+        .lastImg img{
+             width: 100%;
+    height: 100%;
+    object-fit: cover;
         }
